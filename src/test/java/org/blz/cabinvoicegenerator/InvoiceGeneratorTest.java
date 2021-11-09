@@ -3,6 +3,8 @@ package org.blz.cabinvoicegenerator;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class InvoiceGeneratorTest {
     public static InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
 
@@ -39,7 +41,28 @@ public class InvoiceGeneratorTest {
                 new Rides(0.1, 1)};
         Invoice_Summary actualsummary = invoiceGenerator.calculateFareReturnSummary(rides);
         Invoice_Summary expectedSummary = new Invoice_Summary(2, 60);
-        if(expectedSummary.getAverageFare() == actualsummary.getAverageFare() && expectedSummary.getNumberOfRides() == actualsummary.getNumberOfRides() && expectedSummary.getTotalFare() == actualsummary.getTotalFare())
+        if (expectedSummary.getAverageFare() == actualsummary.getAverageFare() && expectedSummary.getNumberOfRides() == actualsummary.getNumberOfRides() && expectedSummary.getTotalFare() == actualsummary.getTotalFare())
+            Assert.assertEquals(1, 1);
+        else
+            Assert.assertEquals(1, 0);
+    }
+
+    @Test
+    public void givenUserId_Should_then_ReturnInvoiceSummary_List() {
+
+        String userId = "1";
+        Invoice_List invoicelist = new Invoice_List();
+
+        ArrayList<Rides> rides = new ArrayList<Rides>();
+        rides.add(new Rides(5.0, 5));
+        rides.add(new Rides(0.1, 1));
+
+        invoicelist.addRides(userId, rides);
+        ArrayList<Rides> listOfRides = invoicelist.getRides(userId);
+
+        Invoice_Summary summaryForUser1 = invoiceGenerator.calculateFareReturnSummary(listOfRides);
+        Invoice_Summary expectedSummary = new Invoice_Summary(2, 60);
+        if (expectedSummary.getAverageFare() == summaryForUser1.getAverageFare() && expectedSummary.getNumberOfRides() == summaryForUser1.getNumberOfRides() && expectedSummary.getTotalFare() == summaryForUser1.getTotalFare())
             Assert.assertEquals(1, 1);
         else
             Assert.assertEquals(1,0);
